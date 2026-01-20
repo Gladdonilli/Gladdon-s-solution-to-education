@@ -1,0 +1,33 @@
+[project]
+name = "canvas-sync"
+version = "0.1.0"
+description = "Sync Canvas LMS data to Obsidian markdown notes"
+requires-python = ">=3.11"
+dependencies = [
+    "canvasapi>=3.0.0",
+    "keyring>=24.0.0",
+    "flask>=3.0.0",
+    "schedule>=1.2.0",
+    "html2text>=2024.2.26",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-playwright>=0.4.0",
+    "responses>=0.25.0",
+    "freezegun>=1.2.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
