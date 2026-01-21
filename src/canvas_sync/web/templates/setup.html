@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Setup - Canvas Sync{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h2>Welcome to Canvas Sync</h2>
+        <p class="text-muted">Connect your Canvas account to sync assignments and events to Obsidian.</p>
+        
+        <form method="post" action="/setup">
+            <div class="mb-3">
+                <label for="canvas_url" class="form-label">Canvas URL</label>
+                <input type="url" class="form-control" id="canvas_url" name="canvas_url" 
+                       value="{{ default_url }}" required>
+                <div class="form-text">Your institution's Canvas URL</div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="api_token" class="form-label">API Token</label>
+                <input type="password" class="form-control" id="api_token" name="api_token" required>
+                <div class="form-text">
+                    Generate at Canvas → Account → Settings → New Access Token
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Save & Continue</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

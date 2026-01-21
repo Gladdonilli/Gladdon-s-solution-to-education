@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Status - Canvas Sync{% endblock %}
+
+{% block content %}
+<h2>Sync Status</h2>
+
+{% if last_sync_at %}
+<p>Last sync: <strong>{{ last_sync_at }}</strong></p>
+
+{% if status %}
+<div class="card">
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between">
+                <span>Assignments synced</span>
+                <span class="badge bg-success">{{ status.assignments_synced }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+                <span>Events synced</span>
+                <span class="badge bg-success">{{ status.events_synced }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+                <span>Skipped</span>
+                <span class="badge bg-warning">{{ status.skipped }}</span>
+            </li>
+        </ul>
+        
+        {% if status.courses_synced %}
+        <div class="mt-3">
+            <h6>Courses</h6>
+            <ul>
+                {% for course in status.courses_synced %}
+                <li>{{ course }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+{% else %}
+<p class="text-muted">No sync has been performed yet.</p>
+{% endif %}
+
+<a href="/sync" class="btn btn-primary mt-3">Sync Now</a>
+{% endblock %}

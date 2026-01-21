@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Select Courses - Canvas Sync{% endblock %}
+
+{% block content %}
+<h2>Select Courses to Sync</h2>
+<p class="text-muted">Choose which courses to sync to your Obsidian vault.</p>
+
+<form method="post" action="/courses">
+    <div class="list-group mb-3">
+        {% for course in courses %}
+        <label class="list-group-item">
+            <input class="form-check-input me-2" type="checkbox" 
+                   name="course_ids" value="{{ course.id }}"
+                   {% if course.id in selected_ids %}checked{% endif %}>
+            {{ course.name }}
+        </label>
+        {% endfor %}
+    </div>
+    
+    <button type="submit" class="btn btn-primary" id="save-courses">Save Selection</button>
+</form>
+{% endblock %}
