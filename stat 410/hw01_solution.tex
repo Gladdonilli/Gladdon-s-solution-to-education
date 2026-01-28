@@ -1,0 +1,151 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage[margin=1in]{geometry}
+
+\begin{document}
+
+\begin{center}
+\textbf{STAT 410 -- Homework \#01}\\
+Sections 1.7--1.8: Transformations of Random Variables\\
+Due: January 30, 2026\\[6pt]
+By Tianyi Li
+\end{center}
+
+\bigskip
+
+\textbf{1.} Let $X$ be a continuous r.v. with p.d.f. $f_X(x) = \frac{2x + 3}{C}$, $1 < x < 6$, zero elsewhere.
+
+\medskip
+
+(a) For a valid p.d.f., we need $\int_{-\infty}^{\infty} f_X(x)\, dx = 1$.
+\[
+\int_1^6 \frac{2x + 3}{C}\, dx = 1 \implies \frac{1}{C} \left[ x^2 + 3x \right]_1^6 = 1 \implies \frac{1}{C}(50) = 1
+\]
+Hence $\boxed{C = 50}$.
+
+\medskip
+
+(b) The c.d.f. is $F_X(x) = \int_1^x f_X(t)\, dt$ for $1 < x < 6$.
+\[
+F_X(x) = \frac{1}{50} \left[ t^2 + 3t \right]_1^x = \frac{x^2 + 3x - 4}{50}
+\]
+\[
+\boxed{F_X(x) = \begin{cases} 0 & x \leq 1 \\ \frac{x^2 + 3x - 4}{50} & 1 < x < 6 \\ 1 & x \geq 6 \end{cases}}
+\]
+Check: $F_X(1) = \frac{1 + 3 - 4}{50} = 0$ and $F_X(6) = \frac{36 + 18 - 4}{50} = 1$.
+
+\medskip
+
+(c) 
+\[
+E[X] = \int_1^6 x \cdot \frac{2x + 3}{50}\, dx = \frac{1}{50} \left[ \frac{2x^3}{3} + \frac{3x^2}{2} \right]_1^6
+\]
+At $x = 6$: $\frac{2 \cdot 216}{3} + \frac{3 \cdot 36}{2} = 144 + 54 = 198$.
+At $x = 1$: $\frac{2}{3} + \frac{3}{2} = \frac{13}{6}$.
+
+Thus $E[X] = \frac{1}{50}\left(198 - \frac{13}{6}\right) = \frac{1175}{300} = \boxed{\frac{47}{12} \approx 3.9167}$.
+
+\medskip
+
+(d) Let $Y = \sqrt{X + 3}$.
+
+Since $1 < X < 6$, we have $4 < X + 3 < 9$, so $\boxed{2 < Y < 3}$.
+
+\medskip
+
+(e) Using the c.d.f. technique:
+\[
+F_Y(y) = P(Y \leq y) = P(\sqrt{X + 3} \leq y) = P(X \leq y^2 - 3) = F_X(y^2 - 3)
+\]
+Let $u = y^2 - 3$. Substituting into $F_X(u) = \frac{u^2 + 3u - 4}{50}$:
+\[
+F_Y(y) = \frac{(y^2 - 3)^2 + 3(y^2 - 3) - 4}{50}
+\]
+Expanding $(y^2 - 3)^2 = y^4 - 6y^2 + 9$ and $3(y^2 - 3) = 3y^2 - 9$:
+\[
+= \frac{y^4 - 6y^2 + 9 + 3y^2 - 9 - 4}{50} = \frac{y^4 - 3y^2 - 4}{50}
+\]
+\[
+\boxed{F_Y(y) = \begin{cases} 0 & y \leq 2 \\ \frac{y^4 - 3y^2 - 4}{50} & 2 < y < 3 \\ 1 & y \geq 3 \end{cases}}
+\]
+Check: $F_Y(2) = \frac{16 - 12 - 4}{50} = 0$ and $F_Y(3) = \frac{81 - 27 - 4}{50} = 1$.
+
+\medskip
+
+(f) Change-of-variable: $y = \sqrt{x + 3} \implies x = y^2 - 3$, so $\frac{dx}{dy} = 2y$.
+\[
+f_Y(y) = f_X(y^2 - 3) \cdot \left| \frac{dx}{dy} \right| = \frac{2(y^2 - 3) + 3}{50} \cdot 2y = \frac{(2y^2 - 3) \cdot 2y}{50}
+\]
+\[
+\boxed{f_Y(y) = \begin{cases} \frac{4y^3 - 6y}{50} & 2 < y < 3 \\ 0 & \text{otherwise} \end{cases}}
+\]
+
+\medskip
+
+(g) Let $W = \frac{10}{X + 4}$.
+
+Since $1 < X < 6$, we have $5 < X + 4 < 10$, so $1 < \frac{10}{X+4} < 2$. Hence $\boxed{1 < W < 2}$.
+
+\medskip
+
+(h) Note $W$ decreases as $X$ increases.
+\[
+F_W(w) = P\left(\frac{10}{X + 4} \leq w\right) = P\left(X \geq \frac{10}{w} - 4\right) = 1 - F_X\left(\frac{10}{w} - 4\right)
+\]
+Let $u = \frac{10}{w} - 4$. Expanding $u^2 = \frac{100}{w^2} - \frac{80}{w} + 16$ and $3u = \frac{30}{w} - 12$:
+\[
+F_X(u) = \frac{\frac{100}{w^2} - \frac{80}{w} + 16 + \frac{30}{w} - 12 - 4}{50} = \frac{\frac{100}{w^2} - \frac{50}{w}}{50} = \frac{2 - w}{w^2}
+\]
+So $F_W(w) = 1 - \frac{2 - w}{w^2} = \frac{w^2 + w - 2}{w^2}$.
+\[
+\boxed{F_W(w) = \begin{cases} 0 & w \leq 1 \\ \frac{w^2 + w - 2}{w^2} & 1 < w < 2 \\ 1 & w \geq 2 \end{cases}}
+\]
+Check: $F_W(1) = \frac{1 + 1 - 2}{1} = 0$ and $F_W(2) = \frac{4 + 2 - 2}{4} = 1$.
+
+\medskip
+
+(i) Change-of-variable: $w = \frac{10}{x + 4} \implies x = \frac{10}{w} - 4$, so $\frac{dx}{dw} = -\frac{10}{w^2}$.
+\[
+f_W(w) = f_X\left(\frac{10}{w} - 4\right) \cdot \left| \frac{dx}{dw} \right| = \frac{2\left(\frac{10}{w} - 4\right) + 3}{50} \cdot \frac{10}{w^2}
+\]
+\[
+= \frac{\frac{20}{w} - 8 + 3}{50} \cdot \frac{10}{w^2} = \frac{\frac{20}{w} - 5}{50} \cdot \frac{10}{w^2} = \frac{200 - 50w}{50w^3} = \frac{4 - w}{w^3}
+\]
+\[
+\boxed{f_W(w) = \begin{cases} \frac{4 - w}{w^3} & 1 < w < 2 \\ 0 & \text{otherwise} \end{cases}}
+\]
+
+\bigskip
+
+\textbf{2.} Let $X$ be a discrete r.v. with p.m.f. $p_X(x) = \frac{2x + 3}{C}$, $x = 2, 3, 4, 5$, zero elsewhere.
+
+\medskip
+
+(a) For a valid p.m.f., $\sum_x p_X(x) = 1$.
+\[
+\frac{1}{C} \left[ 7 + 9 + 11 + 13 \right] = \frac{40}{C} = 1 \implies \boxed{C = 40}
+\]
+
+\medskip
+
+(b) Let $Y = \frac{12}{X - 1}$. The mapping is one-to-one:
+
+\begin{center}
+\begin{tabular}{c|c|c}
+$x$ & $y = \frac{12}{x - 1}$ & $p_X(x)$ \\
+\hline
+2 & 12 & $\frac{7}{40}$ \\
+3 & 6 & $\frac{9}{40}$ \\
+4 & 4 & $\frac{11}{40}$ \\
+5 & 3 & $\frac{13}{40}$
+\end{tabular}
+\end{center}
+
+\[
+\boxed{p_Y(y) = \begin{cases} \frac{13}{40} & y = 3 \\ \frac{11}{40} & y = 4 \\ \frac{9}{40} & y = 6 \\ \frac{7}{40} & y = 12 \\ 0 & \text{otherwise} \end{cases}}
+\]
+
+Check: $\frac{7 + 9 + 11 + 13}{40} = 1$.
+
+\end{document}

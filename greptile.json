@@ -1,0 +1,62 @@
+{
+  "$schema": "https://greptile.com/schema/greptile.json",
+  "strictness": 3,
+  "commentTypes": ["logic"],
+  "triggerOnUpdates": false,
+  "shouldUpdateDescription": false,
+  "disabledLabels": ["draft", "wip", "do-not-review", "no-review"],
+  "ignorePatterns": [
+    "dist/**",
+    "build/**",
+    "__pycache__/**",
+    "*.egg-info/**",
+    ".venv/**",
+    "venv/**",
+    "*.pyc",
+    "*.pyo",
+    "coverage/**",
+    ".pytest_cache/**",
+    "*.db",
+    "*.sqlite",
+    "package-lock.json",
+    "yarn.lock",
+    "pnpm-lock.yaml",
+    "**/*.test.py",
+    "**/*_test.py",
+    "**/test_*.py",
+    "**/tests/**",
+    ".github/**",
+    "docs/**",
+    "*.md",
+    "Project-obsidian-vault/**",
+    "stat 410/**",
+    "sped 117/**",
+    "cs 225/**"
+  ],
+  "customContext": {
+    "rules": [
+      {
+        "scope": ["src/**/*.py"],
+        "rule": "Python project with type hints. Trust type checkers. Only flag logic errors, not type annotations."
+      },
+      {
+        "scope": ["src/canvas_sync/api/**/*.py"],
+        "rule": "Canvas API handlers must catch errors and handle rate limiting. Flag unhandled exceptions and missing input validation."
+      },
+      {
+        "scope": ["src/canvas_sync/sync/**/*.py"],
+        "rule": "Sync logic for Canvas LMS to Obsidian. Flag file operations without existence checks, missing error handling for HTTP requests."
+      },
+      {
+        "scope": ["src/canvas_sync/web/**/*.py"],
+        "rule": "Flask web routes. Flag missing input validation and error responses that leak internal details."
+      }
+    ],
+    "other": [
+      {
+        "scope": ["**/*"],
+        "content": "Solo developer project using 'Silent Sentinel' review philosophy. Prioritize: (1) Security vulnerabilities, (2) Runtime crashes, (3) Data corruption, (4) Performance bottlenecks. IGNORE: Style, formatting, naming, minor refactoring suggestions. Read Macroscope.md for detailed rules."
+      }
+    ]
+  }
+}
