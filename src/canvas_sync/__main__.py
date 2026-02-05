@@ -6,6 +6,7 @@ Usage:
 """
 
 import argparse
+import logging
 import sys
 
 
@@ -21,6 +22,16 @@ def main() -> None:
         help="Run as background sync daemon",
     )
     parser.add_argument(
+        "--update",
+        action="store_true",
+        help="Run daily update (sync all courses + regenerate TODO)",
+    )
+    parser.add_argument(
+        "--docs",
+        action="store_true",
+        help="Sync course documents only (PDFs, pages, materials)",
+    )
+    parser.add_argument(
         "--version",
         action="store_true",
         help="Show version and exit",
@@ -34,14 +45,49 @@ def main() -> None:
         print(f"canvas-sync {__version__}")
         sys.exit(0)
 
-    if args.daemon:
+    if args.docs:
+        from canvas_sync.api.auth import ConfigError, get_api_token
+        from canvas_sync.sync.documents import sync_all_documents
+
+        try:
+            get_api_token(require=True)
+        except ConfigError as e:
+            logging.error("Config error: %s", e)
+            print("Error: Canvas API token not configured. Run the web UI first.")
+            sys.exit(1)
+        
+        print("Syncing course documents...")
+        results = sync_all_documents()
+        for course, data in results['courses'].items():
+            print(f"  {course}: {data['synced']} synced, {data['skipped']} skipped")
+        print(f"Total: {results['total_synced']} synced, {results['total_skipped']} skipped")
+        sys.exit(0 if not results['errors'] else 1)
+    elif args.update:
+        from canvas_sync.api.auth import ConfigError, get_api_token
+        from canvas_sync.sync.daily_update import run_daily_update
+
+        try:
+            get_api_token(require=True)
+        except ConfigError as e:
+            logging.error("Config error: %s", e)
+            print("Error: Canvas API token not configured. Run the web UI first.")
+            sys.exit(1)
+        
+        print("Running daily update...")
+        results = run_daily_update()
+        print(f"Synced {results['assignments_synced']} assignments, {results['events_synced']} events")
+        if results.get('todo_generated'):
+            print("TODO.md regenerated")
+        sys.exit(0 if not results['errors'] else 1)
+    elif args.daemon:
         from canvas_sync.api.auth import ConfigError, get_api_token
         from canvas_sync.scheduler import run_daemon
 
         try:
             get_api_token(require=True)
         except ConfigError as e:
-            print(f"Error: {e}")
+            logging.error("Config error: %s", e)
+            print("Error: Canvas API token not configured. Run the web UI first.")
             sys.exit(1)
         run_daemon()
     else:

@@ -178,7 +178,7 @@ def run_sync(vault_path: str, courses: list[dict]) -> dict:
             results["assignments_synced"] += a_count
             results["skipped"] += a_skipped
             results["courses_synced"].append(course["course_name"])
-        except Exception as e:
+        except (OSError, ValueError) as e:
             results["errors"].append(f"Assignments for {course['course_name']}: {e}")
 
     try:
@@ -186,7 +186,7 @@ def run_sync(vault_path: str, courses: list[dict]) -> dict:
         e_count, e_skipped = sync_calendar_events(course_ids, vault_path)
         results["events_synced"] += e_count
         results["skipped"] += e_skipped
-    except Exception as e:
+    except (OSError, ValueError) as e:
         results["errors"].append(f"Calendar events: {e}")
 
     results["completed_at"] = datetime.now().isoformat()

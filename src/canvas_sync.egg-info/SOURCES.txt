@@ -1,8 +1,16 @@
 pyproject.toml
 src/canvas_sync/__init__.py
+src/canvas_sync/__main__.py
+src/canvas_sync/config.py
 src/canvas_sync.egg-info/PKG-INFO
 src/canvas_sync.egg-info/SOURCES.txt
 src/canvas_sync.egg-info/dependency_links.txt
 src/canvas_sync.egg-info/requires.txt
 src/canvas_sync.egg-info/top_level.txt
+src/canvas_sync/api/__init__.py
+src/canvas_sync/db/__init__.py
+src/canvas_sync/db/models.py
+src/canvas_sync/sync/__init__.py
+src/canvas_sync/web/__init__.py
 tests/test_example.py
+tests/test_structure.py

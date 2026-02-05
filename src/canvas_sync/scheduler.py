@@ -71,7 +71,7 @@ def scheduled_sync(vault_path: str) -> None:
             results["assignments_synced"] += a_count
             results["skipped"] += a_skipped
             results["courses_synced"].append(course["course_name"])
-        except Exception as e:
+        except (OSError, ValueError) as e:
             error_msg = f"Assignments for {course['course_name']}: {e}"
             logging.error(error_msg)
             results["errors"].append(error_msg)
@@ -81,7 +81,7 @@ def scheduled_sync(vault_path: str) -> None:
         e_count, e_skipped = sync_calendar_events(course_ids, vault_path)
         results["events_synced"] += e_count
         results["skipped"] += e_skipped
-    except Exception as e:
+    except (OSError, ValueError) as e:
         error_msg = f"Calendar events: {e}"
         logging.error(error_msg)
         results["errors"].append(error_msg)

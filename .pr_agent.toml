@@ -1,0 +1,109 @@
+# Qodo (PR-Agent) Configuration
+# Philosophy: Silent administrator - auto-describe, manual review/test
+# Docs: https://qodo-merge-docs.qodo.ai/
+
+[config]
+# Model settings (uses Qodo's hosted models by default)
+verbosity_level = 0
+
+[pr_commands]
+# Only auto-run /describe on PR open
+# Manual invocation for /review, /improve, /test
+commands = ["/describe"]
+
+[pr_description]
+# Auto-generate PR description
+publish_labels = false
+generate_ai_title = true
+final_update_message = false
+enable_semantic_files_types = true
+collapsible_file_list = "adaptive"
+inline_file_summary = false
+extra_instructions = """
+- Keep summary concise (2-3 bullet points max)
+- Focus on WHAT changed and WHY
+- Do not include implementation details
+- Use conventional commit style for title
+"""
+
+[pr_reviewer]
+# When manually invoked with /review
+num_code_suggestions = 3
+require_score_review = false
+require_tests_review = false
+require_estimate_effort_to_review = false
+require_security_review = true
+enable_review_labels_security = true
+enable_review_labels_effort = false
+publish_output_no_suggestions = false
+remove_previous_review_comment = true
+extra_instructions = """
+- This is a Python project with Flask and canvasapi
+- Focus ONLY on: logic errors, security issues, race conditions, runtime crashes
+- IGNORE: style, formatting, naming conventions, minor refactoring
+- If unsure whether something is a bug, ask rather than assert
+- Use severity levels: Critical (must fix), Major (should fix), Minor (optional)
+"""
+
+[pr_code_suggestions]
+# When manually invoked with /improve
+focus_only_on_problems = true
+rank_suggestions = true
+dual_publishing_score_threshold = 8
+max_number_of_calls = 3
+self_reflect_on_suggestions = true
+extra_instructions = """
+- Only suggest changes that fix actual bugs or security issues
+- Do NOT suggest style changes or refactoring
+- Each suggestion must have clear before/after code
+"""
+
+[pr_test]
+# When manually invoked with /test
+testing_framework = "pytest"
+num_tests = 3
+avoid_mocks = false
+extra_instructions = """
+- Generate Python tests with pytest
+- Include edge cases and error scenarios
+- Prefer integration tests over unit tests for API handlers
+"""
+
+[pr_update_changelog]
+# Changelog generation
+push_changelog_changes = false
+extra_instructions = """
+- Use Keep a Changelog format
+- Group by: Added, Changed, Fixed, Removed
+- Reference PR number in entries
+"""
+
+[github_action_config]
+# Event triggers (if using GitHub App)
+pr_commands = ["/describe"]
+push_commands = []
+handle_pr_actions = ["opened", "reopened"]
+# Disable on draft PRs
+ignore_pr_labels = ["draft", "wip", "do-not-review"]
+
+[ignore]
+# Files to skip entirely
+glob = [
+    "**/*.md",
+    "**/*.json",
+    "**/*.yaml",
+    "**/*.yml",
+    "**/*.toml",
+    "**/*.db",
+    "**/dist/**",
+    "**/build/**",
+    "**/coverage/**",
+    "**/tests/**",
+    "**/*_test.py",
+    "**/test_*.py",
+    "**/__pycache__/**",
+    "Project-obsidian-vault/**",
+    "stat 410/**",
+    "sped 117/**",
+    "cs 225/**"
+]
